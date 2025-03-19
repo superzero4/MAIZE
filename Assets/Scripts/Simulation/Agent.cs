@@ -1,0 +1,41 @@
+﻿using NUnit.Framework;
+using UnityEngine;
+
+namespace Simulation
+{
+    public struct Agent
+    {
+        private Collider _collider;
+        private float _orientation;
+        private float _speed;
+        private float _rotationSpeed;
+        private Vision _vision;
+
+        public Agent(Vector2 XZposition, float radius, float speed, float orientation, float _rotationSpeed, Vision vision)
+        {
+            _vision = vision;
+            this._rotationSpeed = _rotationSpeed;
+            _orientation = orientation;
+            _collider = new Collider(new Vector3(XZposition.x, 0, XZposition.y), new Vector3(radius, radius, radius));
+            _speed = speed;
+        }
+
+        public void Move(float displacement)
+        {
+            Assert.IsTrue(displacement>=-1 && displacement<=1);
+            _collider.Move(new Vector3(Mathf.Cos(_orientation+90),0,Mathf.Sin(_orientation+90)) * (displacement * _speed));
+        }
+
+        public Collider Collider => _collider;
+        public float Orientation => _orientation;
+        public float[] ComputeVision(Maze maze)
+        {
+            return _vision.ComputeVision(this, maze);
+        }
+        public void Rotate(float rotation)
+        {
+            Assert.IsTrue(rotation>=-1 && rotation<=1);
+            _orientation += rotation * _rotationSpeed;
+        }
+    }
+}
