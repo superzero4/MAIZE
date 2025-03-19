@@ -19,11 +19,14 @@ namespace Simulation
             _collider = new Collider(new Vector3(XZposition.x, 0, XZposition.y), new Vector3(radius, radius, radius));
             _speed = speed;
         }
-
-        public void Move(float displacement)
+        public void MoveVector(Vector3 displacement)
         {
-            Assert.IsTrue(displacement>=-1 && displacement<=1);
-            _collider.Move(new Vector3(Mathf.Cos(_orientation+90),0,Mathf.Sin(_orientation+90)) * (displacement * _speed));
+            _collider.Move(displacement);
+        }
+        public void Move(float displacementIntensity)
+        {
+            Assert.IsTrue(displacementIntensity>=-1 && displacementIntensity<=1);
+            _collider.Move(new Vector3(Mathf.Cos(_orientation+90),0,Mathf.Sin(_orientation+90)) * (displacementIntensity * _speed));
         }
 
         public Collider Collider => _collider;

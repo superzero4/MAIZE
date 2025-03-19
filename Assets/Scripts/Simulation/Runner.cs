@@ -31,8 +31,10 @@ namespace Simulation
         {
             var dir = _brain.GetRotation(_agent, _maze);
             _agent.Rotate(dir * deltaTime);
-            var imp = _brain.GetImpulsion(_agent, _maze);
+            var imp = _brain.IBrain(_agent, _maze);
             _agent.Move(imp * deltaTime);
+            if (_maze.Depenetrate(_agent.Collider, out Vector3 force))
+                _agent.MoveVector(force);
         }
     }
 }

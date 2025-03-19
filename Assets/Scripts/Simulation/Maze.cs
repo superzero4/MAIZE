@@ -16,34 +16,42 @@ namespace Simulation
         /// <param name="center"></param>
         /// <param name="size">Lenght, Height, Width (flipped with the horizontal bool)</param>
         /// <param name="horizontal"></param>
-        public Wall(Vector2 center, Vector3 size,bool horizontal)
+        public Wall(Vector2 center, Vector3 size, bool horizontal)
         {
-            if(!horizontal)
+            if (!horizontal)
                 size = new Vector3(size.z, size.y, size.x);
-            collider = new Collider(new Bounds(new Vector3(center.x,center.y), size));
+            collider = new Collider(new Bounds(new Vector3(center.x, center.y), size));
         }
+
         override public string ToString()
         {
             return collider.Bounds.ToString();
         }
     }
+
     public struct Maze
     {
         private Wall[] _walls;
         public IEnumerable<Wall> Walls => _walls;
+
         public Maze(IEnumerable<Wall> walls)
         {
             _walls = walls.ToArray();
         }
-        public void Depenetrate(ref Collider collider)
+
+        public bool Depenetrate(Collider collider, out Vector3 force)
         {
+            force = Vector3.zero;
             foreach (var wall in _walls)
             {
                 if (collider.Intersects(wall.Collider))
                 {
-                    collider.Move(-collider.Bounds.center);
+                    Vector3 closest = wall.Collider.Bounds.ClosestPoint(collider.Bounds.center);
+                    force += -(closest-collider.Bounds.center);
                 }
             }
+
+            return force != Vector3.zero;
         }
     }
 }
