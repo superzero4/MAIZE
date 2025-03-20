@@ -22,7 +22,7 @@ namespace View.Simple
                 return UnityEngine.Random.Range(-1f, 1f);
             }
 
-            public float IBrain(Agent a, Maze maze)
+            public float GetImpulsion(Agent a, Maze maze)
             {
                 return UnityEngine.Random.Range(-1f, 1f);
             }
