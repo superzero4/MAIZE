@@ -1,16 +1,20 @@
+using System.Linq;
 using Simulation;
+using Simulation.Generation;
 using UnityEngine;
 
 namespace View.Simple
 {
     public class SimpleView : MonoBehaviour
     {
+        [SerializeField] private Vector2Int _size;
         [Header("Prefabs")] [SerializeField] private GameObject _agentPrefab;
 
         [SerializeField] private GameObject _wallPrefab;
+        [SerializeField] private GameObject _goalPrefab;
         [SerializeField] private GameObject agent;
         [Header("Settings")] [SerializeField] private Runner _runner;
-        
+
         private class RandomBrain : IBrain
         {
             public float GetRotation(Agent a, Maze maze)
@@ -26,7 +30,15 @@ namespace View.Simple
 
         void Awake()
         {
-            _runner = new Runner(GetComponent<IBrain>() ?? new RandomBrain(), new Vision(5, 30, 10),.5f , -1, 0);
+            var goal = _size / 2;
+            Instantiate(_goalPrefab, new Vector3(goal.x, 0, goal.y), Quaternion.identity);
+            var generator = new MazeGenerator(_size, goal);
+            var walls = generator.Generate();
+            _runner = new Runner(
+                walls.Select(w => new Wall(new Vector2(w.Item1.x, w.Item1.y), new Vector3(1, .5f, .1f), w.Item2)),
+                GetComponent<IBrain>() ?? new RandomBrain(),
+                new Vision(5, 30, 10),
+                0, 0, 0);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created

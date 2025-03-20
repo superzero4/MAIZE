@@ -28,10 +28,10 @@ namespace Simulation
                 var direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
                 float distance = _range;
                 Ray ray = new Ray(agent.Collider.Bounds.center, direction);
-                Debug.Log($"Ray {ray} from angle {angle * Mathf.Rad2Deg} for offset {offset}");
+                //Debug.Log($"Ray {ray} from angle {angle * Mathf.Rad2Deg} for offset {offset}");
                 foreach (var wall in maze.Walls)
                 {
-                    Debug.Log($"Wall {wall} hit at {_range}");
+                    //Debug.Log($"Wall {wall} hit at {_range}");
                     if (wall.Collider.Intersects(ray, out float result))
                     {
                         if (result < distance)
