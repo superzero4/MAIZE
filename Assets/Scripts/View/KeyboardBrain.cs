@@ -14,5 +14,10 @@ namespace View.Simple
         {
             return Input.GetAxis("Vertical");
         }
+
+        public bool GetJump(Agent a, Maze maze)
+        {
+            return Input.GetKeyDown(KeyCode.Space);
+        }
     }
 }

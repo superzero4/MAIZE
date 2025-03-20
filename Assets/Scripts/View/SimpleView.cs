@@ -2,6 +2,7 @@ using System.Linq;
 using Simulation;
 using Simulation.Generation;
 using UnityEngine;
+using Time = UnityEngine.Time;
 
 namespace View.Simple
 {
@@ -26,6 +27,11 @@ namespace View.Simple
             {
                 return UnityEngine.Random.Range(-1f, 1f);
             }
+
+            public bool GetJump(Agent a, Maze maze)
+            {
+                return UnityEngine.Random.value > .9f;
+            }
         }
 
         void Awake()
@@ -35,7 +41,8 @@ namespace View.Simple
             var generator = new MazeGenerator(_size, goal);
             var walls = generator.Generate();
             _runner = new Runner(
-                walls.Select(w => new Wall(new Vector2(w.Item1.x, w.Item1.y), new Vector3(1, .5f, .1f), w.Item2)),
+                walls.Select(w =>
+                    new Wall(new Vector2(w.Item1.x, w.Item1.z), new Vector3(1, w.Item1.y * 1.5f, .1f), w.Item2)),
                 GetComponent<IBrain>() ?? new RandomBrain(),
                 new Vision(5, 30, 10),
                 0, 0, 0);
@@ -48,7 +55,8 @@ namespace View.Simple
             foreach (var wall in _runner.Maze.Walls)
             {
                 var wallBounds = wall.Collider.Bounds;
-                var go = Instantiate(_wallPrefab, new Vector3(wallBounds.center.x, 0, wallBounds.center.y),
+                var go = Instantiate(_wallPrefab,
+                    new Vector3(wallBounds.center.x, wallBounds.center.y, wallBounds.center.z),
                     Quaternion.identity);
                 go.transform.localScale = wallBounds.size;
             }
@@ -68,7 +76,7 @@ namespace View.Simple
         // Update is called once per frame
         void Update()
         {
-            _runner.Tick(Time.deltaTime);
+            _runner.Tick(UnityEngine.Time.deltaTime);
             SnapAgent();
             Debug.Log($"Vision : {string.Join(",", _runner.Agent.ComputeVision(_runner.Maze))}");
         }

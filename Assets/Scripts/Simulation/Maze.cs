@@ -20,7 +20,7 @@ namespace Simulation
         {
             if (!horizontal)
                 size = new Vector3(size.z, size.y, size.x);
-            collider = new Collider(new Bounds(new Vector3(center.x, center.y), size));
+            collider = new Collider(new Bounds(new Vector3(center.x, size.y / 2f, center.y), size));
         }
 
         override public string ToString()
@@ -47,7 +47,7 @@ namespace Simulation
                 if (collider.Intersects(wall.Collider))
                 {
                     Vector3 closest = wall.Collider.Bounds.ClosestPoint(collider.Bounds.center);
-                    force += -(closest-collider.Bounds.center);
+                    force += -(closest - collider.Bounds.center);
                 }
             }
 
