@@ -339,6 +339,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _size: {x: 10, y: 10}
+  _scale: 3
   _agentPrefab: {fileID: 3177183046563158333, guid: d8735596859dfae41bde492b533355b5, type: 3}
   _wallPrefab: {fileID: 1086995341535184098, guid: 6b3804fb38736aa4d93a32925ae24fd2, type: 3}
   _goalPrefab: {fileID: 1840778211358563230, guid: 3bdb2c4a473992f449fe00ad4d0d1a7b, type: 3}

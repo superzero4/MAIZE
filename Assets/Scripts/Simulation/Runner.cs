@@ -16,11 +16,11 @@ namespace Simulation
         private IBrain _brain;
         private float time = 0f;
 
-        public Runner(IEnumerable<Wall> walls, IBrain brain, Vision vision, float x = 0, float y = 0, float orientation = 0)
+        public Runner(Maze maze, IBrain brain, Agent agent)
         {
             _brain = brain;
-            _agent = new Agent(new Vector2(x, y), .5f, 5f, orientation, 300, vision);
-            _maze = new Maze(walls);
+            _agent = agent;
+            _maze = maze;
         }
 
         public Maze Maze => _maze;

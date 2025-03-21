@@ -2,6 +2,7 @@ using System.Linq;
 using Simulation;
 using Simulation.Generation;
 using UnityEngine;
+using UnityEngine.Serialization;
 using Time = UnityEngine.Time;
 
 namespace View.Simple
@@ -9,6 +10,7 @@ namespace View.Simple
     public class SimpleView : MonoBehaviour
     {
         [SerializeField] private Vector2Int _size;
+        [FormerlySerializedAs("_scale")] [SerializeField, Range(0.1f, 3f)] private float _xzScale;
         [Header("Prefabs")] [SerializeField] private GameObject _agentPrefab;
 
         [SerializeField] private GameObject _wallPrefab;
@@ -37,15 +39,16 @@ namespace View.Simple
         void Awake()
         {
             var goal = _size / 2;
-            Instantiate(_goalPrefab, new Vector3(goal.x, 0, goal.y), Quaternion.identity);
+            float cellRadius = .5f;
             var generator = new MazeGenerator(_size, goal);
-            var walls = generator.Generate();
-            _runner = new Runner(
-                walls.Select(w =>
-                    new Wall(new Vector2(w.Item1.x, w.Item1.z), new Vector3(1, w.Item1.y * 1.5f, .1f), w.Item2)),
-                GetComponent<IBrain>() ?? new RandomBrain(),
-                new Vision(5, 30, 10),
-                0, 0, 0);
+            var walls = generator.Generate().Select(w =>
+            {
+                return new Wall(new Vector2(w.Item1.x * _xzScale, w.Item1.z *_xzScale), new Vector3(1*_xzScale, w.Item1.y * 1.5f, .1f), w.Item2);
+            });
+            var maze = new Maze(walls, new Vector2(goal.x, goal.y) * _xzScale, cellRadius);
+            var ag = new Agent(new Vector2(0, 0), cellRadius, 5f, 0, 300, new Vision(5, 30, 10));
+            _runner = new Runner(maze, GetComponent<IBrain>() ?? new RandomBrain(), ag);
+            Instantiate(_goalPrefab, maze.Goal.Bounds.center, Quaternion.identity);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created

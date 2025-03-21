@@ -32,11 +32,15 @@ namespace Simulation
     public struct Maze
     {
         private Wall[] _walls;
+        private Collider _goal;
         public IEnumerable<Wall> Walls => _walls;
 
-        public Maze(IEnumerable<Wall> walls)
+        public Collider Goal => _goal;
+
+        public Maze(IEnumerable<Wall> walls, Vector2 goal, float goalRadius)
         {
             _walls = walls.ToArray();
+            _goal = new Collider(new Bounds(new Vector3(goal.x, goalRadius/2f, goal.y), goalRadius*Vector3.one));
         }
 
         public bool Depenetrate(Collider collider, out Vector3 force)

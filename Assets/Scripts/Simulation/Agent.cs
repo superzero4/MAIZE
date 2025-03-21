@@ -39,7 +39,7 @@ namespace Simulation
         public Collider Collider => _collider;
         public float Orientation => _orientation;
 
-        public float[] ComputeVision(Maze maze)
+        public Vision.VisionData[] ComputeVision(Maze maze)
         {
             return _vision.ComputeVision(this, maze);
         }
@@ -73,7 +73,8 @@ namespace Simulation
                 //Debug.Log($"Jumping with h={h}, timeJump={timeJump}, _jumpStart={_jumpStart}, Time.time={Time.time}");
                 //_collider.Move(Vector3.up * h);
             }
-            if(_collider.Bounds.center.y > Radius || gravity < 0)
+
+            if (_collider.Bounds.center.y > Radius || gravity < 0)
                 _collider.Move(Vector3.down * (gravity * Time.deltaTime));
             //else
             //    _collider.Bounds.center = new Vector3(_collider.Bounds.center.x, Radius, _collider.Bounds.center.z);
