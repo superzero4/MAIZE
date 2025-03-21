@@ -2,6 +2,7 @@ using System.Linq;
 using Simulation;
 using Simulation.Generation;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
 using Time = UnityEngine.Time;
 
@@ -87,6 +88,8 @@ namespace View.Simple
             _runner.Tick(UnityEngine.Time.deltaTime);
             SnapAgent();
             Debug.Log($"Vision : {string.Join(";", _runner.Agent.ComputeVision(_runner.Maze))}");
+            if(_runner.GoalReached)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }
