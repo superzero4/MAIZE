@@ -9,6 +9,10 @@ namespace Simulation
         {
             public bool isGoal;
             public float distance;
+            override public string ToString()
+            {
+                return $"({distance},{isGoal})";
+            }
         }
 
         private float _radius;

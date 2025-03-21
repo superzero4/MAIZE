@@ -10,7 +10,10 @@ namespace View.Simple
     public class SimpleView : MonoBehaviour
     {
         [SerializeField] private Vector2Int _size;
-        [FormerlySerializedAs("_scale")] [SerializeField, Range(0.1f, 3f)] private float _xzScale;
+
+        [FormerlySerializedAs("_scale")] [SerializeField, Range(0.1f, 3f)]
+        private float _xzScale;
+
         [Header("Prefabs")] [SerializeField] private GameObject _agentPrefab;
 
         [SerializeField] private GameObject _wallPrefab;
@@ -43,12 +46,12 @@ namespace View.Simple
             var generator = new MazeGenerator(_size, goal);
             var walls = generator.Generate().Select(w =>
             {
-                return new Wall(new Vector2(w.Item1.x * _xzScale, w.Item1.z *_xzScale), new Vector3(1*_xzScale, w.Item1.y * 1.5f, .1f), w.Item2);
+                return new Wall(new Vector2(w.Item1.x * _xzScale, w.Item1.z * _xzScale),
+                    new Vector3(1 * _xzScale, w.Item1.y * 1.5f, .1f), w.Item2);
             });
-            var maze = new Maze(walls, new Vector2(goal.x, goal.y) * _xzScale, cellRadius);
-            var ag = new Agent(new Vector2(0, 0), cellRadius, 5f, 0, 300, new Vision(5, 30, 10));
+            var maze = new Maze(walls, new Vector2(goal.x, goal.y) * _xzScale, cellRadius * _xzScale);
+            var ag = new Agent(new Vector2(0, 0), cellRadius, 5f, 0, 300, new Vision(5, 30, 10*_xzScale));
             _runner = new Runner(maze, GetComponent<IBrain>() ?? new RandomBrain(), ag);
-            Instantiate(_goalPrefab, maze.Goal.Bounds.center, Quaternion.identity);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -64,6 +67,8 @@ namespace View.Simple
                 go.transform.localScale = wallBounds.size;
             }
 
+            var goal = Instantiate(_goalPrefab, _runner.Maze.Goal.Bounds.center, Quaternion.identity);
+            goal.transform.localScale = _runner.Maze.Goal.Bounds.size;
             agent = Instantiate(_agentPrefab, transform);
             SnapAgent();
         }
@@ -81,7 +86,7 @@ namespace View.Simple
         {
             _runner.Tick(UnityEngine.Time.deltaTime);
             SnapAgent();
-            Debug.Log($"Vision : {string.Join(",", _runner.Agent.ComputeVision(_runner.Maze))}");
+            Debug.Log($"Vision : {string.Join(";", _runner.Agent.ComputeVision(_runner.Maze))}");
         }
     }
 }
