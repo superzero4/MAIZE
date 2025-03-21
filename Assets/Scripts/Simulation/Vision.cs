@@ -34,9 +34,9 @@ namespace Simulation
             {
                 float offset = ((2f * i) / _visionBuffer.Length - 1) * _radius;
                 var angle = agent.Orientation + offset;
-                angle += 90; //So we remap 0 to forward and not right (-90 as we want)
+                angle += 0; //So we remap 0 to forward and not right (-90 as we want)
                 angle *= Mathf.Deg2Rad;
-                var direction = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle));
+                var direction = new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle));
                 float distance = _range;
                 bool goal = false;
                 Ray ray = new Ray(agent.Collider.Bounds.center, direction);
