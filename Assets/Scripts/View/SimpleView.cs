@@ -2,12 +2,19 @@ using System.Linq;
 using Simulation;
 using Simulation.Generation;
 using UnityEngine;
+using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
+using Time = UnityEngine.Time;
 
 namespace View.Simple
 {
     public class SimpleView : MonoBehaviour
     {
         [SerializeField] private Vector2Int _size;
+
+        [FormerlySerializedAs("_scale")] [SerializeField, Range(0.1f, 3f)]
+        private float _xzScale;
+
         [Header("Prefabs")] [SerializeField] private GameObject _agentPrefab;
 
         [SerializeField] private GameObject _wallPrefab;
@@ -22,23 +29,30 @@ namespace View.Simple
                 return UnityEngine.Random.Range(-1f, 1f);
             }
 
-            public float IBrain(Agent a, Maze maze)
+            public float GetImpulsion(Agent a, Maze maze)
             {
                 return UnityEngine.Random.Range(-1f, 1f);
+            }
+
+            public bool GetJump(Agent a, Maze maze)
+            {
+                return UnityEngine.Random.value > .9f;
             }
         }
 
         void Awake()
         {
             var goal = _size / 2;
-            Instantiate(_goalPrefab, new Vector3(goal.x, 0, goal.y), Quaternion.identity);
+            float cellRadius = .5f;
             var generator = new MazeGenerator(_size, goal);
-            var walls = generator.Generate();
-            _runner = new Runner(
-                walls.Select(w => new Wall(new Vector2(w.Item1.x, w.Item1.y), new Vector3(1, .5f, .1f), w.Item2)),
-                GetComponent<IBrain>() ?? new RandomBrain(),
-                new Vision(5, 30, 10),
-                0, 0, 0);
+            var walls = generator.Generate().Select(w =>
+            {
+                return new Wall(new Vector2(w.Item1.x * _xzScale, w.Item1.z * _xzScale),
+                    new Vector3(1 * _xzScale, w.Item1.y * 1.5f, .1f), w.Item2);
+            });
+            var maze = new Maze(walls, new Vector2(goal.x, goal.y) * _xzScale, cellRadius * _xzScale);
+            var ag = new Agent(new Vector2(0, 0), cellRadius, 5f, 0, 300, new Vision(5, 30, 10*_xzScale));
+            _runner = new Runner(maze, GetComponent<IBrain>() ?? new RandomBrain(), ag);
         }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
@@ -48,11 +62,14 @@ namespace View.Simple
             foreach (var wall in _runner.Maze.Walls)
             {
                 var wallBounds = wall.Collider.Bounds;
-                var go = Instantiate(_wallPrefab, new Vector3(wallBounds.center.x, 0, wallBounds.center.y),
+                var go = Instantiate(_wallPrefab,
+                    new Vector3(wallBounds.center.x, wallBounds.center.y, wallBounds.center.z),
                     Quaternion.identity);
                 go.transform.localScale = wallBounds.size;
             }
 
+            var goal = Instantiate(_goalPrefab, _runner.Maze.Goal.Bounds.center, Quaternion.identity);
+            goal.transform.localScale = _runner.Maze.Goal.Bounds.size;
             agent = Instantiate(_agentPrefab, transform);
             SnapAgent();
         }
@@ -68,9 +85,11 @@ namespace View.Simple
         // Update is called once per frame
         void Update()
         {
-            _runner.Tick(Time.deltaTime);
+            _runner.Tick(UnityEngine.Time.deltaTime);
             SnapAgent();
-            Debug.Log($"Vision : {string.Join(",", _runner.Agent.ComputeVision(_runner.Maze))}");
+            Debug.Log($"Vision : {string.Join(";", _runner.Agent.ComputeVision(_runner.Maze))}");
+            if(_runner.GoalReached)
+                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
 }

@@ -10,9 +10,14 @@ namespace View.Simple
             return Input.GetAxis("Horizontal");
         }
 
-        public float IBrain(Agent a, Maze maze)
+        public float GetImpulsion(Agent a, Maze maze)
         {
             return Input.GetAxis("Vertical");
+        }
+
+        public bool GetJump(Agent a, Maze maze)
+        {
+            return Input.GetKeyDown(KeyCode.Space);
         }
     }
 }
