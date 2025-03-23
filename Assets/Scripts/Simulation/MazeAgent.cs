@@ -3,15 +3,16 @@ using UnityEngine;
 
 namespace Simulation
 {
-    public struct Agent
+    public struct MazeAgent
     {
         private Collider _collider;
         private float _orientation;
         private float _speed;
         private float _rotationSpeed;
         private Vision _vision;
+        public Bounds init;
 
-        public Agent(Vector2 XZposition, float radius, float speed, float orientation, float _rotationSpeed,
+        public MazeAgent(Vector2 XZposition, float radius, float speed, float orientation, float _rotationSpeed,
             Vision vision)
         {
             _jumpStart = -2 * _jumpDuration;
@@ -20,6 +21,7 @@ namespace Simulation
             _orientation = orientation;
             _collider = new Collider(new Vector3(XZposition.x, radius / 2f, XZposition.y),
                 new Vector3(radius, radius, radius));
+            init = _collider.Bounds;
             _speed = speed;
         }
 
@@ -62,6 +64,8 @@ namespace Simulation
 
         private float Radius => _collider.Bounds.size.x;
 
+        public Vision Vision => _vision;
+
         public void Tick()
         {
             float timeJump = Time.time - _jumpStart;
@@ -78,6 +82,11 @@ namespace Simulation
                 _collider.Move(Vector3.down * (gravity * Time.deltaTime));
             //else
             //    _collider.Bounds.center = new Vector3(_collider.Bounds.center.x, Radius, _collider.Bounds.center.z);
+        }
+
+        public void Reset()
+        {
+            _collider = new Collider(init);
         }
     }
 }

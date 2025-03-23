@@ -1,6 +1,9 @@
+using System.Collections;
+using System.Collections.Generic;
 using System.Linq;
 using Simulation;
 using Simulation.Generation;
+using Simulation.ML;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.Serialization;
@@ -10,85 +13,99 @@ namespace View.Simple
 {
     public class SimpleView : MonoBehaviour
     {
-        [SerializeField] private Vector2Int _size;
-
-        [FormerlySerializedAs("_scale")] [SerializeField, Range(0.1f, 3f)]
-        private float _xzScale;
-
+        [SerializeField] private bool _useKB;
+        [SerializeField] private bool _tickOnUpdate;
+        [SerializeField] private TrainedMazeAgent _trainer;
         [Header("Prefabs")] [SerializeField] private GameObject _agentPrefab;
 
         [SerializeField] private GameObject _wallPrefab;
         [SerializeField] private GameObject _goalPrefab;
-        [SerializeField] private GameObject agent;
-        [Header("Settings")] [SerializeField] private Runner _runner;
+        [SerializeField] private GameObject _brain;
+        private List<GameObject> _walls;
+        private GameObject _goal;
+        private GameObject agent;
+        private Runner _runner;
 
         private class RandomBrain : IBrain
         {
-            public float GetRotation(Agent a, Maze maze)
+            public float GetRotation(MazeAgent a, Maze maze)
             {
                 return UnityEngine.Random.Range(-1f, 1f);
             }
 
-            public float GetImpulsion(Agent a, Maze maze)
+            public float GetImpulsion(MazeAgent a, Maze maze)
             {
                 return UnityEngine.Random.Range(-1f, 1f);
             }
 
-            public bool GetJump(Agent a, Maze maze)
+            public bool GetJump(MazeAgent a, Maze maze)
             {
                 return UnityEngine.Random.value > .9f;
             }
         }
 
-        void Awake()
-        {
-            var goal = _size / 2;
-            float cellRadius = .5f;
-            var generator = new MazeGenerator(_size, goal);
-            var walls = generator.Generate().Select(w =>
-            {
-                return new Wall(new Vector2(w.Item1.x * _xzScale, w.Item1.z * _xzScale),
-                    new Vector3(1 * _xzScale, w.Item1.y * 1.5f, .1f), w.Item2);
-            });
-            var maze = new Maze(walls, new Vector2(goal.x, goal.y) * _xzScale, cellRadius * _xzScale);
-            var ag = new Agent(new Vector2(0, 0), cellRadius, 5f, 0, 300, new Vision(5, 30, 10*_xzScale));
-            _runner = new Runner(maze, GetComponent<IBrain>() ?? new RandomBrain(), ag);
-        }
 
         // Start is called once before the first execution of Update after the MonoBehaviour is created
-        void Start()
+        IEnumerator Start()
         {
-            _runner.Init();
-            foreach (var wall in _runner.Maze.Walls)
+            yield return new WaitWhile(() => _trainer.Runner == null);
+            _walls = new List<GameObject>();
+            while (true)
             {
-                var wallBounds = wall.Collider.Bounds;
-                var go = Instantiate(_wallPrefab,
-                    new Vector3(wallBounds.center.x, wallBounds.center.y, wallBounds.center.z),
-                    Quaternion.identity);
-                go.transform.localScale = wallBounds.size;
-            }
+                _runner = _trainer.Runner;
+                if (_useKB)
+                    _runner.SetBrain(new RandomBrain());
+                int i = 0;
+                foreach (var wall in _runner.Maze.Walls)
+                {
+                    var wallBounds = wall.Collider.Bounds;
+                    GameObject go;
+                    if (i < _walls.Count)
+                        go = _walls[i];
+                    else
+                    {
+                        go = Instantiate(_wallPrefab);
+                        _walls.Add(go);
+                    }
 
-            var goal = Instantiate(_goalPrefab, _runner.Maze.Goal.Bounds.center, Quaternion.identity);
-            goal.transform.localScale = _runner.Maze.Goal.Bounds.size;
-            agent = Instantiate(_agentPrefab, transform);
-            SnapAgent();
+                    go.transform.localPosition = wallBounds.center;
+                    go.transform.localScale = wallBounds.size;
+                    i++;
+                }
+
+                for (; i < _walls.Count; i++)
+                {
+                    Destroy(_walls[i]);
+                    _walls.RemoveAt(i);
+                }
+                _goal ??= Instantiate(_goalPrefab, _runner.Maze.Goal.Bounds.center, Quaternion.identity);
+                _goal.transform.localScale = _runner.Maze.Goal.Bounds.size;
+                agent = Instantiate(_agentPrefab, transform);
+                SnapAgent();
+                //Refresh view on change
+                yield return new WaitUntil(() => _trainer.Runner != _runner);
+            }
         }
+
 
         private void SnapAgent()
         {
-            var agentBounds = _runner.Agent.Collider.Bounds;
+            var agentBounds = _runner.MazeAgent.Collider.Bounds;
             agent.transform.localScale = agentBounds.size;
             agent.transform.localPosition = agentBounds.center;
-            agent.transform.eulerAngles = new(0, _runner.Agent.Orientation, 0);
+            agent.transform.eulerAngles = new(0, _runner.MazeAgent.Orientation, 0);
         }
 
         // Update is called once per frame
         void Update()
         {
-            _runner.Tick(UnityEngine.Time.deltaTime);
+            if (_runner == null || agent == null)
+                return;
+            if (_tickOnUpdate)
+                _runner.Tick(UnityEngine.Time.deltaTime);
             SnapAgent();
-            Debug.Log($"Vision : {string.Join(";", _runner.Agent.ComputeVision(_runner.Maze))}");
-            if(_runner.GoalReached)
+            //Debug.Log($"Vision : {string.Join(";", _runner.MazeAgent.ComputeVision(_runner.Maze))}");
+            if (_runner.GoalReached)
                 SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
         }
     }
