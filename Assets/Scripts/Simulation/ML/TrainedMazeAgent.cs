@@ -52,7 +52,7 @@ namespace Simulation.ML
             lastStepTime = 0f;
             _parameters.BrainParameters.VectorObservationSize = 2 * _main.MazeAgent.Vision.Resolution;
             _parameters.BrainParameters.NumStackedVectorObservations = 1; // _main.MazeAgent.Vision.Resolution;
-            _parameters.BrainParameters.ActionSpec = new ActionSpec(2, new[] { 1 });
+            _parameters.BrainParameters.ActionSpec = new ActionSpec(3, new[] { 1 });
             base.Initialize();
         }
 
@@ -68,6 +68,7 @@ namespace Simulation.ML
             _brain.rotation = actions.ContinuousActions[0];
             _brain.impulsion = actions.ContinuousActions[1];
             _brain.jump = actions.DiscreteActions[0] == 1;
+            _brain.jump = actions.ContinuousActions[2] > .5f;
             _main.Tick(currentTime - lastStepTime);
             lastStepTime = currentTime;
             if (_main.GoalReached)
