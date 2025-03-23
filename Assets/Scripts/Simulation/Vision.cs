@@ -18,7 +18,8 @@ namespace Simulation
         private float _radius;
         private float _range;
         private VisionData[] _visionBuffer;
-
+        public int Resolution => _visionBuffer.Length;
+        public int Size => Resolution * 2;
         public Vision(float radius, int resolution, float range)
         {
             _range = range;
@@ -28,18 +29,18 @@ namespace Simulation
             _visionBuffer = new VisionData[resolution];
         }
 
-        public VisionData[] ComputeVision(Agent agent, Maze maze)
+        public VisionData[] ComputeVision(MazeAgent mazeAgent, Maze maze)
         {
-            for (int i = 0; i < _visionBuffer.Length; i++)
+            for (int i = 0; i < Resolution; i++)
             {
-                float offset = ((2f * i) / _visionBuffer.Length - 1) * _radius;
-                var angle = agent.Orientation + offset;
+                float offset = ((2f * i) / Resolution - 1) * _radius;
+                var angle = mazeAgent.Orientation + offset;
                 angle += 0; //So we remap 0 to forward and not right (-90 as we want)
                 angle *= Mathf.Deg2Rad;
                 var direction = new Vector3(Mathf.Sin(angle), 0, Mathf.Cos(angle));
                 float distance = _range;
                 bool goal = false;
-                Ray ray = new Ray(agent.Collider.Bounds.center, direction);
+                Ray ray = new Ray(mazeAgent.Collider.Bounds.center, direction);
                 //Debug.Log($"Ray {ray} from angle {angle * Mathf.Rad2Deg} for offset {offset}");
                 foreach ((Collider wall, bool isGoal) in maze.Walls.Select(w => (w.Collider, false))
                              .Append((maze.Goal, true)))

@@ -12,7 +12,7 @@ namespace Simulation
 
     public class Runner
     {
-        private Agent _agent;
+        private MazeAgent _mazeAgent;
         private Maze _maze;
         private IBrain _brain;
 
@@ -21,18 +21,19 @@ namespace Simulation
         //Vision ray is shooted from the center therefore it will remain strictly positive before this becomes true (is a large estimation but way enough for simulation
         public bool GoalReached => DistToGoal < _maze.Goal.Bounds.size.x;
         public double DistToGoal => Mathf.Sqrt(GoalChecker.SqrDistance(_maze.Goal.Bounds.center));
-        public Bounds GoalChecker => _agent.Collider.Bounds;
-        public Runner(Maze maze, IBrain brain, Agent agent)
+        public Bounds GoalChecker => _mazeAgent.Collider.Bounds;
+        public Runner(Maze maze, IBrain brain, MazeAgent mazeAgent)
         {
             _brain = brain;
-            _agent = agent;
+            _mazeAgent = mazeAgent;
             _maze = maze;
         }
 
+        public void SetBrain(IBrain brain) => _brain = brain;
+
         public Maze Maze => _maze;
 
-        public Agent Agent => _agent;
-
+        public MazeAgent MazeAgent => _mazeAgent;
         public void Init()
         {
             time = 0f;
@@ -42,16 +43,16 @@ namespace Simulation
         {
             Time.deltaTime = deltaTime;
             Time.time += deltaTime;
-            var dir = _brain.GetRotation(_agent, _maze);
-            _agent.Rotate(dir * deltaTime);
-            var imp = _brain.GetImpulsion(_agent, _maze);
-            _agent.Move(imp * deltaTime);
-            if (_maze.Depenetrate(_agent.Collider, out Vector3 force))
-                _agent.MoveVector(force);
-            var jump = _brain.GetJump(_agent, _maze);
+            var dir = _brain.GetRotation(_mazeAgent, _maze);
+            _mazeAgent.Rotate(dir * deltaTime);
+            var imp = _brain.GetImpulsion(_mazeAgent, _maze);
+            _mazeAgent.Move(imp * deltaTime);
+            if (_maze.Depenetrate(_mazeAgent.Collider, out Vector3 force))
+                _mazeAgent.MoveVector(force);
+            var jump = _brain.GetJump(_mazeAgent, _maze);
             if (jump)
-                _agent.Jump();
-            _agent.Tick();
+                _mazeAgent.Jump();
+            _mazeAgent.Tick();
         }
     }
 }
