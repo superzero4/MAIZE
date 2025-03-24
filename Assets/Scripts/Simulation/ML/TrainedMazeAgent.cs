@@ -3,6 +3,7 @@ using Unity.MLAgents.Actuators;
 using Unity.MLAgents.Policies;
 using Unity.MLAgents.Sensors;
 using UnityEngine;
+using UnityEngine.Serialization;
 using View.Simple;
 
 namespace Simulation.ML
@@ -33,16 +34,30 @@ namespace Simulation.ML
     {
         [SerializeField] private RunSettings _view;
         [SerializeField] private BehaviorParameters _parameters;
+        [SerializeField] private KeyboardBrain _keyboardBrain;
         private CachedBrain _brain;
         [SerializeField] private Runner _main;
 
-        [SerializeField,Range(0.5f,100f)] private float _maxTime;
-        [Header("Readonly")]
-        [SerializeField] private float currentTime;
+        [FormerlySerializedAs("_reward")] [SerializeField, Header("Reward")]
+        private RewardValues _rewardValues;
+
+        [SerializeField, Range(0.5f, 100f)] private float _maxTime;
+
+        [Header("Readonly")] [Header("Time")] [SerializeField]
+        private float currentTime;
+
         [SerializeField] private float lastStartTime;
         [SerializeField] private float lastStepTime;
 
+        [Header("Agent vs maze info")] [SerializeField]
+        private bool _wallHit;
+
+        [SerializeField] private bool _reachedObjective;
+        [Header("ML Infos")] [SerializeField] private int _lastEpisodeReward;
+
         public Runner Runner => _main;
+
+        public int LastEpisodeReward => _lastEpisodeReward;
 
         public override void Initialize()
         {
@@ -58,7 +73,10 @@ namespace Simulation.ML
 
         public override void Heuristic(in ActionBuffers actionsOut)
         {
-            base.Heuristic(in actionsOut);
+            var continuousActionsOut = actionsOut.ContinuousActions;
+            continuousActionsOut[0] = _keyboardBrain.GetRotation(default, default);
+            continuousActionsOut[1] = _keyboardBrain.GetImpulsion(default, default);
+            continuousActionsOut[2] = _keyboardBrain.GetJump(default, default) ? 1.0f : 0.0f;
         }
 
         public override void OnActionReceived(ActionBuffers actions)
@@ -69,16 +87,34 @@ namespace Simulation.ML
             _brain.impulsion = actions.ContinuousActions[1];
             _brain.jump = actions.DiscreteActions[0] == 1;
             _brain.jump = actions.ContinuousActions[2] > .5f;
-            _main.Tick(currentTime - lastStepTime);
+            _main.Tick(currentTime - lastStepTime, out _wallHit, out _reachedObjective);
             lastStepTime = currentTime;
-            if (_main.GoalReached)
+            SetRewards();
+        }
+
+        private void SetRewards()
+        {
+            if (_wallHit)
             {
-                SetReward(100.0f);
+                AddReward(_rewardValues.WallHit);
+            }
+
+            if (_main.MazeAgent.Vision.hasGoalInSight)
+            {
+                AddReward(_rewardValues.GoalSeen);
+            }
+
+            if (_reachedObjective)
+            {
+                AddReward(_rewardValues.GoalReached);
+                _lastEpisodeReward = (int)GetCumulativeReward();
                 EndEpisode();
             }
-            else if ((currentTime - lastStartTime) > _maxTime)
+
+            if (currentTime - lastStartTime > _maxTime)
             {
-                SetReward(-100.0f);
+                AddReward(_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
+                _lastEpisodeReward = (int)GetCumulativeReward();
                 EndEpisode();
             }
         }
@@ -86,7 +122,8 @@ namespace Simulation.ML
         public override void CollectObservations(VectorSensor sensor)
         {
             base.CollectObservations(sensor);
-            foreach (var v in _main.MazeAgent.ComputeVision(_main.Maze))
+            var array = _main.MazeAgent.ComputeVision(_main.Maze);
+            foreach (var v in array)
             {
                 //TODO create a new observation vector before putting distance and isGoal
                 sensor.AddObservation(v.isGoal);

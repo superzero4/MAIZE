@@ -37,10 +37,10 @@ namespace Simulation
 
         public Collider Goal => _goal;
 
-        public Maze(IEnumerable<Wall> walls, Vector2 goal, float goalRadius)
+        public Maze(IEnumerable<Wall> walls, Bounds goal)
         {
             _walls = walls.ToArray();
-            _goal = new Collider(new Bounds(new Vector3(goal.x, goalRadius/2f, goal.y), goalRadius*Vector3.one));
+            _goal = new Collider(goal);
         }
 
         public bool Depenetrate(Collider collider, out Vector3 force)

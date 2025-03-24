@@ -17,7 +17,7 @@ namespace View.Simple
 
         public bool GetJump(MazeAgent a, Maze maze)
         {
-            return Input.GetKeyDown(KeyCode.Space);
+            return Input.GetKey(KeyCode.Space);
         }
     }
 }

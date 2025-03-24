@@ -13,8 +13,7 @@ namespace View.Simple
 {
     public class SimpleView : MonoBehaviour
     {
-        [SerializeField] private bool _useKB;
-        [SerializeField] private bool _tickOnUpdate;
+        [SerializeField, Range(1, 1000)] private int _maxAgentCorpse = 10;
         [SerializeField] private TrainedMazeAgent _trainer;
         [Header("Prefabs")] [SerializeField] private GameObject _agentPrefab;
 
@@ -25,6 +24,7 @@ namespace View.Simple
         private GameObject _goal;
         private GameObject agent;
         private Runner _runner;
+        private Queue<GameObject> _agents;
 
         private class RandomBrain : IBrain
         {
@@ -50,11 +50,10 @@ namespace View.Simple
         {
             yield return new WaitWhile(() => _trainer.Runner == null);
             _walls = new List<GameObject>();
+            _agents = new Queue<GameObject>();
             while (true)
             {
                 _runner = _trainer.Runner;
-                if (_useKB)
-                    _runner.SetBrain(new RandomBrain());
                 int i = 0;
                 foreach (var wall in _runner.Maze.Walls)
                 {
@@ -78,9 +77,16 @@ namespace View.Simple
                     Destroy(_walls[i]);
                     _walls.RemoveAt(i);
                 }
+
                 _goal ??= Instantiate(_goalPrefab, _runner.Maze.Goal.Bounds.center, Quaternion.identity);
                 _goal.transform.localScale = _runner.Maze.Goal.Bounds.size;
+                if (agent != null)
+                    agent.gameObject.name += "( " + _trainer.LastEpisodeReward + " )";
+
                 agent = Instantiate(_agentPrefab, transform);
+                if (_agents.Count >= _maxAgentCorpse)
+                    Destroy(_agents.Dequeue());
+                _agents.Enqueue(agent);
                 SnapAgent();
                 //Refresh view on change
                 yield return new WaitUntil(() => _trainer.Runner != _runner);
@@ -101,12 +107,14 @@ namespace View.Simple
         {
             if (_runner == null || agent == null)
                 return;
-            if (_tickOnUpdate)
-                _runner.Tick(UnityEngine.Time.deltaTime);
             SnapAgent();
             //Debug.Log($"Vision : {string.Join(";", _runner.MazeAgent.ComputeVision(_runner.Maze))}");
             if (_runner.GoalReached)
-                SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            {
+                Debug.LogWarning("------------------Goal  reached------------------");
+                //Debug.Break();
+                //SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+            }
         }
     }
 }
