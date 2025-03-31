@@ -6,6 +6,8 @@ using UnityEngine;
 using UnityEngine.Serialization;
 using View.Simple;
 
+
+
 namespace Simulation.ML
 {
     public class CachedBrain : IBrain
@@ -32,6 +34,7 @@ namespace Simulation.ML
 
     public class TrainedMazeAgent : Agent
     {
+        public Timer timer;
         [SerializeField] private RunSettings _view;
         [SerializeField] private BehaviorParameters _parameters;
         [SerializeField] private KeyboardBrain _keyboardBrain;
@@ -137,6 +140,7 @@ namespace Simulation.ML
             InitBrain();
             lastStartTime = UnityEngine.Time.time;
             _main.MazeAgent.Reset();
+            timer.reset();
         }
 
         private void InitBrain()
