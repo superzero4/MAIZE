@@ -9,7 +9,7 @@ namespace Simulation.ML
         [Header("Global")] [SerializeField, Range(0.001f, 1000f)]
         private float _scale;
 
-        [Header("Positives")] [SerializeField, Range(0.001f, 100f)]
+        [Header("Positives")] [SerializeField, Range(0.001f, 10000f)]
         private float _goalReached;
 
         [SerializeField, Range(0f, 100f)] private float _goalSeen;
