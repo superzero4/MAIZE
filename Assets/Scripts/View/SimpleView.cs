@@ -63,7 +63,7 @@ namespace View.Simple
                         go = _walls[i];
                     else
                     {
-                        go = Instantiate(_wallPrefab);
+                        go = Instantiate(_wallPrefab,transform);
                         _walls.Add(go);
                     }
 
@@ -78,7 +78,8 @@ namespace View.Simple
                     _walls.RemoveAt(i);
                 }
 
-                _goal ??= Instantiate(_goalPrefab, _runner.Maze.Goal.Bounds.center, Quaternion.identity);
+                _goal = Instantiate(_goalPrefab, transform);
+                _goal.transform.localPosition = _runner.Maze.Goal.Bounds.center;
                 _goal.transform.localScale = _runner.Maze.Goal.Bounds.size;
                 if (agent != null)
                     agent.gameObject.name += "( " + _trainer.LastEpisodeReward + " )";
