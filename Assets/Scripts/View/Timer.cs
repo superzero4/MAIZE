@@ -5,6 +5,7 @@ public class Timer : MonoBehaviour
 {
     public int duration = 15;
     private int timeRemaining;
+    private float timeRemainingFloat;
     public TextMeshProUGUI TimerText;
 
     public void Start()
@@ -15,12 +16,14 @@ public class Timer : MonoBehaviour
     void Update()
     {
         TimerText.text = timeRemaining.ToString();
-        timeRemaining =  timeRemaining - 1;
+        timeRemainingFloat =  timeRemainingFloat - Time.deltaTime;
+        timeRemaining = (int)timeRemainingFloat;
     }
 
     public void reset()
     {
         timeRemaining = duration;
+        timeRemainingFloat = (float)duration;
     }
 
 
