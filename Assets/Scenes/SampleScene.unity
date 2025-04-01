@@ -175,6 +175,22 @@ PrefabInstance:
       propertyPath: m_Name
       value: Multi
       objectReference: {fileID: 0}
+    - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: m_Model
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: m_BrainParameters.VectorActionSize.Array.size
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: 'm_BrainParameters.VectorActionSize.Array.data[0]'
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: m_BrainParameters.m_ActionSpec.BranchSizes.Array.size
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
