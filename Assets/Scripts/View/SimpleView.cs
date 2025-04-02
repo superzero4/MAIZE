@@ -51,6 +51,8 @@ namespace View.Simple
             yield return new WaitWhile(() => _trainer.Runner == null);
             _walls = new List<GameObject>();
             _agents = new Queue<GameObject>();
+            var wallparent = new GameObject("Walls").transform;
+            wallparent.parent = transform;
             while (true)
             {
                 _runner = _trainer.Runner;
@@ -63,7 +65,7 @@ namespace View.Simple
                         go = _walls[i];
                     else
                     {
-                        go = Instantiate(_wallPrefab,transform);
+                        go = Instantiate(_wallPrefab, wallparent);
                         _walls.Add(go);
                     }
 
@@ -78,12 +80,12 @@ namespace View.Simple
                     _walls.RemoveAt(i);
                 }
 
-                _goal = Instantiate(_goalPrefab, transform);
+                if (_goal == null)
+                    _goal = Instantiate(_goalPrefab, transform);
                 _goal.transform.localPosition = _runner.Maze.Goal.Bounds.center;
                 _goal.transform.localScale = _runner.Maze.Goal.Bounds.size;
                 if (agent != null)
                     agent.gameObject.name += "( " + _trainer.LastEpisodeReward + " )";
-
                 agent = Instantiate(_agentPrefab, transform);
                 if (_agents.Count >= _maxAgentCorpse)
                     Destroy(_agents.Dequeue());
