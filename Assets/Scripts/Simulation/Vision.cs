@@ -21,7 +21,6 @@ namespace Simulation
         private VisionData[] _visionBuffer;
         public bool hasGoalInSight;
         public int Resolution => _visionBuffer.Length;
-        public int Size => Resolution * 2;
 
         public Vision(float radius, int resolution, float range)
         {

@@ -1,5 +1,6 @@
 ﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 namespace Simulation.ML
 {
@@ -14,29 +15,27 @@ namespace Simulation.ML
 
         [SerializeField, Range(0f, 100f)] private float _goalSeen;
 
-        [Header("Negatives")] [SerializeField, Range(-100f, 0f)]
-        private float _timeOut;
+        [Header("Negatives")] 
 
         [SerializeField, Range(-100f, 0f)] private float _wallHit;
 
-        [Header("Relatives")]
-        [SerializeField, Range(0f, 1f),
-         Tooltip(
-             "When there is a timeout, we calculate how close the agent is and then reduce the negative reward proportinally to this value and the relative distance to goal considering the start position as max Distance,\n => A value of 1 would make a -~0.0001 reward if we are 1 pixel away from the objective\n => A value of 0.5 would make half up to half the full negativ reward the close we get\n => A value of 0 would make the same negative reward for any timeout, without taking the distance in consideration")]
-        private float _distanceToGoalBonusProportion;
+        [FormerlySerializedAs("_maxTime")]
+        [Header("Time")]
+        [SerializeField, Range(1f, 1000f)]
+        private float _referenceTime;
+        [SerializeField, Range(0f, 500),Tooltip("Relative to reference time, will be relatively punished if above max time and relatively rewarded if below, 0 means it reached the reference time, it will get half this value if it performs in half the time")]
+        private float _timeReward;
+        
 
-        public float GoalReached => _goalReached * _scale;
+        public float FinishedReward(float elapsed)
+        {
+            return (_goalReached + _timeReward * (1 - elapsed / _referenceTime)) * _scale;
+        }
 
         public float GoalSeen => _goalSeen * _scale;
 
-        public float WallHit => _wallHit;
+        public float WallHit => _wallHit * _scale;
 
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="howFar">0 means we reached the objective, 1 or more means we are at same distance as on start of more far</param>
-        /// <returns></returns>
-        public float TimeOut(float howFar) =>
-            (_timeOut - _timeOut * _distanceToGoalBonusProportion * (1 - howFar)) * _scale;
+        public float GoalReached => _goalReached * _scale;
     }
 }

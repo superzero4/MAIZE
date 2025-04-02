@@ -46,7 +46,7 @@ namespace Simulation
             startPos = _mazeAgent.Collider.Bounds.center;
         }
 
-        public void Tick(float deltaTime, out bool hitWall, out bool reachedObjective)
+        public void Tick(float deltaTime, out bool hitWall, out bool reachedObjective, out bool wentOut)
         {
             Time.deltaTime = deltaTime;
             Time.time += deltaTime;
@@ -65,6 +65,7 @@ namespace Simulation
                 _mazeAgent.MoveVector(force);
             }
 
+            wentOut = !_maze.Global.Contains(_mazeAgent.Collider.Bounds.center);
             reachedObjective = GoalReached;
         }
     }

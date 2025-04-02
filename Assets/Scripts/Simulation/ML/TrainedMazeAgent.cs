@@ -7,7 +7,6 @@ using UnityEngine.Serialization;
 using View.Simple;
 
 
-
 namespace Simulation.ML
 {
     public class CachedBrain : IBrain
@@ -44,7 +43,6 @@ namespace Simulation.ML
         [FormerlySerializedAs("_reward")] [SerializeField, Header("Reward")]
         private RewardValues _rewardValues;
 
-        [SerializeField, Range(0.5f, 100f)] private float _maxTime;
 
         [Header("Readonly")] [Header("Time")] [SerializeField]
         private float currentTime;
@@ -54,6 +52,8 @@ namespace Simulation.ML
 
         [Header("Agent vs maze info")] [SerializeField]
         private bool _wallHit;
+
+        private bool _wentOut;
 
         [SerializeField] private bool _reachedObjective;
         [Header("ML Infos")] [SerializeField] private int _lastEpisodeReward;
@@ -68,7 +68,8 @@ namespace Simulation.ML
             currentTime = 0f;
             lastStartTime = 0f;
             lastStepTime = 0f;
-            _parameters.BrainParameters.VectorObservationSize = 2 * _main.MazeAgent.Vision.Resolution;
+            _parameters.BrainParameters.VectorObservationSize = /* one bool and one float*/
+                2 * _main.MazeAgent.Vision.Resolution;
             _parameters.BrainParameters.NumStackedVectorObservations = 1; // _main.MazeAgent.Vision.Resolution;
             _parameters.BrainParameters.ActionSpec = new ActionSpec(3, new[] { 1 });
             base.Initialize();
@@ -88,9 +89,11 @@ namespace Simulation.ML
             base.OnActionReceived(actions);
             _brain.rotation = actions.ContinuousActions[0];
             _brain.impulsion = actions.ContinuousActions[1];
-            _brain.jump = actions.DiscreteActions[0] == 1;
+            //_brain.jump = actions.DiscreteActions[0] == 1;
+            //if (actions.ContinuousActions[2] > .5f)
+            //    Debug.Log(actions.ContinuousActions[2]);
             _brain.jump = actions.ContinuousActions[2] > .5f;
-            _main.Tick(currentTime - lastStepTime, out _wallHit, out _reachedObjective);
+            _main.Tick(currentTime - lastStepTime, out _wallHit, out _reachedObjective, out _wentOut);
             lastStepTime = currentTime;
             SetRewards();
         }
@@ -109,17 +112,24 @@ namespace Simulation.ML
 
             if (_reachedObjective)
             {
-                AddReward(_rewardValues.GoalReached);
+                AddReward(_rewardValues.FinishedReward(currentTime - lastStepTime));
                 _lastEpisodeReward = (int)GetCumulativeReward();
                 EndEpisode();
             }
 
-            if (currentTime - lastStartTime > _maxTime)
+            if (_wentOut)
             {
-                AddReward(_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
+                AddReward(-_rewardValues.GoalReached);
                 _lastEpisodeReward = (int)GetCumulativeReward();
                 EndEpisode();
             }
+            //No more timeouts unless the max steps are reached
+            //if (currentTime - lastStartTime > _maxTime)
+            //{
+            //    AddReward(_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
+            //    _lastEpisodeReward = (int)GetCumulativeReward();
+            //    EndEpisode();
+            //}
         }
 
         public override void CollectObservations(VectorSensor sensor)
