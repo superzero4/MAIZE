@@ -127,10 +127,54 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1643912811894266486, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _amount.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643912811894266486, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _amount.y
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643912811894266486, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _amountToView.x
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 1643912811894266486, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _amountToView.y
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: timer
       value: 
       objectReference: {fileID: 220169838}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: MaxStep
+      value: 100000
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _maxTime
+      value: 20
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _rewardValues._wallHit
+      value: -0.25
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _rewardValues._timeReward
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _rewardValues._goalReached
+      value: 750
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _rewardValues._referenceTime
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _rewardValues._distanceToGoalBonusProportion
+      value: 0.5
+      objectReference: {fileID: 0}
     - target: {fileID: 4906701355470263318, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -171,6 +215,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 5888566129237979296, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _fixedSeed
+      value: 42
+      objectReference: {fileID: 0}
+    - target: {fileID: 5888566129237979296, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _newLayoutOnInit
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 5888566129237979296, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _useFixedLabyrinth
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6107354404854355620, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_Name
       value: Multi
@@ -178,7 +234,7 @@ PrefabInstance:
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: cefaf9d79bde20844a4ed5c32e5e645d, type: 3}
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_BrainParameters.VectorActionSize.Array.size
       value: 1
