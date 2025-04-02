@@ -123,13 +123,15 @@ namespace Simulation.ML
                 _lastEpisodeReward = (int)GetCumulativeReward();
                 EndEpisode();
             }
-            //No more timeouts unless the max steps are reached
-            //if (currentTime - lastStartTime > _maxTime)
-            //{
-            //    AddReward(_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
-            //    _lastEpisodeReward = (int)GetCumulativeReward();
-            //    EndEpisode();
-            //}
+            if (_rewardValues.TimeOutAfterRefTime)
+            {
+                if (currentTime - lastStepTime > _rewardValues.ReferenceTime)
+                {
+                    AddReward(-_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
+                    _lastEpisodeReward = (int)GetCumulativeReward();
+                    EndEpisode();
+                }
+            }
         }
 
         public override void CollectObservations(VectorSensor sensor)

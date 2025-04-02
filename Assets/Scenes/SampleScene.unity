@@ -169,7 +169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._referenceTime
-      value: 30
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._distanceToGoalBonusProportion
@@ -234,7 +234,7 @@ PrefabInstance:
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: cefaf9d79bde20844a4ed5c32e5e645d, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_BrainParameters.VectorActionSize.Array.size
       value: 1
