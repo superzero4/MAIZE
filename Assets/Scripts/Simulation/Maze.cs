@@ -34,13 +34,17 @@ namespace Simulation
         private Wall[] _walls;
         private Collider _goal;
         public IEnumerable<Wall> Walls => _walls;
+        private Bounds _global;
 
         public Collider Goal => _goal;
 
-        public Maze(IEnumerable<Wall> walls, Bounds goal)
+        public Bounds Global => _global; 
+
+        public Maze(IEnumerable<Wall> walls, Bounds goal, Bounds global)
         {
             _walls = walls.ToArray();
             _goal = new Collider(goal);
+            _global = global;
         }
 
         public bool Depenetrate(Collider collider, out Vector3 force)
