@@ -11,7 +11,11 @@ namespace View.Simple
     public class RunSettings : MonoBehaviour
     {
         [Header("Settings")] [SerializeField] private Vector2Int _size;
-        [SerializeField] private bool _newLayoutOnInit;
+        [FormerlySerializedAs("_newLayoutOnInit")]
+        [Header("Random")]
+        [SerializeField,Tooltip("Decide either we use the seed or we start with a new random labyrinth on every new call of maze creation => new episode")] private bool _useFixedLabyrinth;
+
+        [SerializeField,Tooltip("The fixed see used to generate the same labyrinth if it's not randomized on each run")] private int _fixedSeed;
 
         [SerializeField, UnityEngine.Range(1, 180)]
         private int _visionRangeDegree = 5;
@@ -41,8 +45,8 @@ namespace View.Simple
         public Runner CreateRunner(IBrain brain)
         {
             Vector2Int offset = Vector2Int.zero;//Not used
-            if (!_newLayoutOnInit)
-                Random.InitState(42);
+            if (_useFixedLabyrinth)
+                Random.InitState(_fixedSeed);
             var goal = offset + (_goalIsOnMiddle ? _size / 2 : _goalOverride);
             var generator = new MazeGenerator(_size, goal);
             var walls = generator.Generate().Select(w =>
@@ -55,7 +59,7 @@ namespace View.Simple
             var goalBounds =
                 new Bounds(new Vector3(goal.x * _xzGlobalScale, _wallScale.y * .5f, goal.y * _xzGlobalScale),
                     new Vector3(_goalRadiusBase * _xzGlobalScale, _wallScale.y, _goalRadiusBase * _xzGlobalScale));
-            var maze = new Maze(walls, goalBounds);
+            var maze = new Maze(walls, goalBounds, new Bounds(goalBounds.center, new Vector3(_size.x * _xzGlobalScale, _wallScale.y*10, _size.y * _xzGlobalScale)));
             var ag = new MazeAgent(offset, _agentRadius, 5f, 0, 300,
                 new Vision(_visionRangeDegree, _visionResolution, _visionRange * _xzGlobalScale));
             var run = new Runner(maze, brain, ag);
