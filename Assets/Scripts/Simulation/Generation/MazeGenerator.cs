@@ -41,13 +41,22 @@ namespace Simulation.Generation
                     {
                         float height;
                         if (info.wallDown == null || !info.wallDown[i])
-                            height = x==0 || x == _size.x-1 || y==0 || y == _size.y-1 || Random.value > .5f
-                                ? 1f
-                                : .5f; //If a wall should be up, it's either fully up or half up
+                        {
+                            //Exterior walls
+                            if ((x == 0 && i == 3) || (x == _size.x - 1 && i == 1) || (y == 0 && i == 2) ||
+                                (y == _size.y - 1 && i == 0))
+                                height = 1f;
+                            else
+                                height = Random.value > .5f
+                                    ? 1f
+                                    : .5f;
+                        }
+                        //If a wall should be up, it's either fully up or half up
                         else
                             height = Random.value > .5f
                                 ? 0f
                                 : .5f; //If a wall should be down, it's either fully down or half down
+
                         if (height >= .25f) //We only want at least half up walls to be concretely in
                             yield return (new Vector3(x + dirs[i].x / 2f, height, y + dirs[i].y / 2f), i % 2 == 0);
                     }

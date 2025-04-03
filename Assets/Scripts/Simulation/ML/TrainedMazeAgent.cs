@@ -112,7 +112,7 @@ namespace Simulation.ML
 
             if (_reachedObjective)
             {
-                AddReward(_rewardValues.FinishedReward(currentTime - lastStepTime));
+                AddReward(_rewardValues.FinishedReward(currentTime - lastStartTime));
                 _lastEpisodeReward = (int)GetCumulativeReward();
                 EndEpisode();
             }
@@ -125,7 +125,7 @@ namespace Simulation.ML
             }
             if (_rewardValues.TimeOutAfterRefTime)
             {
-                if (currentTime - lastStepTime > _rewardValues.ReferenceTime)
+                if (currentTime - lastStartTime > _rewardValues.ReferenceTime)
                 {
                     AddReward(-_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
                     _lastEpisodeReward = (int)GetCumulativeReward();
