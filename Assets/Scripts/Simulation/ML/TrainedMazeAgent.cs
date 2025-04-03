@@ -127,7 +127,7 @@ namespace Simulation.ML
             {
                 if (currentTime - lastStartTime > _rewardValues.ReferenceTime)
                 {
-                    AddReward(-_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
+                    AddReward(_rewardValues.TimeOut(_main.RelativeAgentDistToGoal));
                     _lastEpisodeReward = (int)GetCumulativeReward();
                     EndEpisode();
                 }

@@ -160,6 +160,10 @@ PrefabInstance:
       value: -0.25
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _rewardValues._goalSeen
+      value: 0.5
+      objectReference: {fileID: 0}
+    - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._timeReward
       value: 500
       objectReference: {fileID: 0}
@@ -169,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._referenceTime
-      value: 1
+      value: 60
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._maxTimeoutMalus
