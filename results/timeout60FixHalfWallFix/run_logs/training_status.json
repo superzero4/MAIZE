@@ -1,0 +1,65 @@
+{
+    "3DBall": {
+        "checkpoints": [
+            {
+                "steps": 1999943,
+                "file_path": "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-1999943.onnx",
+                "reward": 1019.9006634416252,
+                "creation_time": 1743720110.1694205,
+                "auxillary_file_paths": [
+                    "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-1999943.pt"
+                ]
+            },
+            {
+                "steps": 2499820,
+                "file_path": "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-2499820.onnx",
+                "reward": 1063.5181899532195,
+                "creation_time": 1743724941.4814312,
+                "auxillary_file_paths": [
+                    "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-2499820.pt"
+                ]
+            },
+            {
+                "steps": 2999783,
+                "file_path": "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-2999783.onnx",
+                "reward": 963.3030534827191,
+                "creation_time": 1743729319.3636854,
+                "auxillary_file_paths": [
+                    "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-2999783.pt"
+                ]
+            },
+            {
+                "steps": 3499556,
+                "file_path": "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-3499556.onnx",
+                "reward": 927.8955396016439,
+                "creation_time": 1743733985.3192692,
+                "auxillary_file_paths": [
+                    "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-3499556.pt"
+                ]
+            },
+            {
+                "steps": 3656870,
+                "file_path": "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-3656870.onnx",
+                "reward": 1020.1025839911567,
+                "creation_time": 1743735319.8890078,
+                "auxillary_file_paths": [
+                    "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-3656870.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3656870,
+            "file_path": "results\\timeout60FixHalfWallFix\\3DBall.onnx",
+            "reward": 1020.1025839911567,
+            "creation_time": 1743735319.8890078,
+            "auxillary_file_paths": [
+                "results\\timeout60FixHalfWallFix\\3DBall\\3DBall-3656870.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.2.0.dev0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

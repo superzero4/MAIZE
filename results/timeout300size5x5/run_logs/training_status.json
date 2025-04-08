@@ -1,0 +1,65 @@
+{
+    "3DBall": {
+        "checkpoints": [
+            {
+                "steps": 4499772,
+                "file_path": "results\\timeout300size5x5\\3DBall\\3DBall-4499772.onnx",
+                "reward": 945.1354929606119,
+                "creation_time": 1743779100.8286836,
+                "auxillary_file_paths": [
+                    "results\\timeout300size5x5\\3DBall\\3DBall-4499772.pt"
+                ]
+            },
+            {
+                "steps": 4999977,
+                "file_path": "results\\timeout300size5x5\\3DBall\\3DBall-4999977.onnx",
+                "reward": 1201.8087812151227,
+                "creation_time": 1743782741.2778435,
+                "auxillary_file_paths": [
+                    "results\\timeout300size5x5\\3DBall\\3DBall-4999977.pt"
+                ]
+            },
+            {
+                "steps": 5499325,
+                "file_path": "results\\timeout300size5x5\\3DBall\\3DBall-5499325.onnx",
+                "reward": -128.56968688964844,
+                "creation_time": 1743786878.6911612,
+                "auxillary_file_paths": [
+                    "results\\timeout300size5x5\\3DBall\\3DBall-5499325.pt"
+                ]
+            },
+            {
+                "steps": 5999867,
+                "file_path": "results\\timeout300size5x5\\3DBall\\3DBall-5999867.onnx",
+                "reward": -373.5925689697266,
+                "creation_time": 1743790586.1657586,
+                "auxillary_file_paths": [
+                    "results\\timeout300size5x5\\3DBall\\3DBall-5999867.pt"
+                ]
+            },
+            {
+                "steps": 6433866,
+                "file_path": "results\\timeout300size5x5\\3DBall\\3DBall-6433866.onnx",
+                "reward": null,
+                "creation_time": 1743794036.6021106,
+                "auxillary_file_paths": [
+                    "results\\timeout300size5x5\\3DBall\\3DBall-6433866.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 6433866,
+            "file_path": "results\\timeout300size5x5\\3DBall.onnx",
+            "reward": null,
+            "creation_time": 1743794036.6021106,
+            "auxillary_file_paths": [
+                "results\\timeout300size5x5\\3DBall\\3DBall-6433866.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.2.0.dev0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

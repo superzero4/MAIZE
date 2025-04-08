@@ -1,0 +1,65 @@
+{
+    "3DBall": {
+        "checkpoints": [
+            {
+                "steps": 499988,
+                "file_path": "results\\random\\3DBall\\3DBall-499988.onnx",
+                "reward": 71.21776580810547,
+                "creation_time": 1743562327.3219962,
+                "auxillary_file_paths": [
+                    "results\\random\\3DBall\\3DBall-499988.pt"
+                ]
+            },
+            {
+                "steps": 999993,
+                "file_path": "results\\random\\3DBall\\3DBall-999993.onnx",
+                "reward": 517.1465058843773,
+                "creation_time": 1743567597.11015,
+                "auxillary_file_paths": [
+                    "results\\random\\3DBall\\3DBall-999993.pt"
+                ]
+            },
+            {
+                "steps": 1499935,
+                "file_path": "results\\random\\3DBall\\3DBall-1499935.onnx",
+                "reward": 529.8808566502163,
+                "creation_time": 1743574221.396836,
+                "auxillary_file_paths": [
+                    "results\\random\\3DBall\\3DBall-1499935.pt"
+                ]
+            },
+            {
+                "steps": 1999896,
+                "file_path": "results\\random\\3DBall\\3DBall-1999896.onnx",
+                "reward": 656.322070488563,
+                "creation_time": 1743583401.5925267,
+                "auxillary_file_paths": [
+                    "results\\random\\3DBall\\3DBall-1999896.pt"
+                ]
+            },
+            {
+                "steps": 2460138,
+                "file_path": "results\\random\\3DBall\\3DBall-2460138.onnx",
+                "reward": 774.3612561817012,
+                "creation_time": 1743603452.3615112,
+                "auxillary_file_paths": [
+                    "results\\random\\3DBall\\3DBall-2460138.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 2460138,
+            "file_path": "results\\random\\3DBall.onnx",
+            "reward": 774.3612561817012,
+            "creation_time": 1743603452.3615112,
+            "auxillary_file_paths": [
+                "results\\random\\3DBall\\3DBall-2460138.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.2.0.dev0",
+        "torch_version": "2.2.1+cpu"
+    }
+}

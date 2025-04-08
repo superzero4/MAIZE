@@ -1,0 +1,65 @@
+{
+    "3DBall": {
+        "checkpoints": [
+            {
+                "steps": 1999380,
+                "file_path": "results\\timeout60\\3DBall\\3DBall-1999380.onnx",
+                "reward": -221.5,
+                "creation_time": 1743681358.9538374,
+                "auxillary_file_paths": [
+                    "results\\timeout60\\3DBall\\3DBall-1999380.pt"
+                ]
+            },
+            {
+                "steps": 2499920,
+                "file_path": "results\\timeout60\\3DBall\\3DBall-2499920.onnx",
+                "reward": 1197.75,
+                "creation_time": 1743687714.1613941,
+                "auxillary_file_paths": [
+                    "results\\timeout60\\3DBall\\3DBall-2499920.pt"
+                ]
+            },
+            {
+                "steps": 2999474,
+                "file_path": "results\\timeout60\\3DBall\\3DBall-2999474.onnx",
+                "reward": null,
+                "creation_time": 1743694021.7133963,
+                "auxillary_file_paths": [
+                    "results\\timeout60\\3DBall\\3DBall-2999474.pt"
+                ]
+            },
+            {
+                "steps": 3499381,
+                "file_path": "results\\timeout60\\3DBall\\3DBall-3499381.onnx",
+                "reward": null,
+                "creation_time": 1743699241.7317195,
+                "auxillary_file_paths": [
+                    "results\\timeout60\\3DBall\\3DBall-3499381.pt"
+                ]
+            },
+            {
+                "steps": 3758055,
+                "file_path": "results\\timeout60\\3DBall\\3DBall-3758055.onnx",
+                "reward": null,
+                "creation_time": 1743701184.526863,
+                "auxillary_file_paths": [
+                    "results\\timeout60\\3DBall\\3DBall-3758055.pt"
+                ]
+            }
+        ],
+        "final_checkpoint": {
+            "steps": 3758055,
+            "file_path": "results\\timeout60\\3DBall.onnx",
+            "reward": null,
+            "creation_time": 1743701184.526863,
+            "auxillary_file_paths": [
+                "results\\timeout60\\3DBall\\3DBall-3758055.pt"
+            ]
+        }
+    },
+    "metadata": {
+        "stats_format_version": "0.3.0",
+        "mlagents_version": "1.2.0.dev0",
+        "torch_version": "2.2.1+cpu"
+    }
+}
