@@ -137,11 +137,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1643912811894266486, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _amountToView.x
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 1643912811894266486, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _amountToView.y
-      value: 1
+      value: 2
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: timer
@@ -173,7 +173,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._referenceTime
-      value: 60
+      value: 300
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._maxTimeoutMalus
@@ -228,6 +228,14 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5888566129237979296, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _size.x
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5888566129237979296, guid: 4a4315295828f964b812abcc820f7250, type: 3}
+      propertyPath: _size.y
+      value: 5
+      objectReference: {fileID: 0}
+    - target: {fileID: 5888566129237979296, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _fixedSeed
       value: 42
       objectReference: {fileID: 0}
@@ -246,7 +254,7 @@ PrefabInstance:
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 5022602860645237092, guid: 8c0e564f4939372418ff28d0ac9170d3, type: 3}
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_BrainParameters.VectorActionSize.Array.size
       value: 1

@@ -53,6 +53,7 @@ namespace View.Simple
             _agents = new Queue<GameObject>();
             var wallparent = new GameObject("Walls").transform;
             wallparent.parent = transform;
+            wallparent.localPosition = Vector3.zero;
             while (true)
             {
                 _runner = _trainer.Runner;
