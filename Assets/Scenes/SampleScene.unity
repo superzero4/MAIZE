@@ -157,7 +157,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._wallHit
-      value: -0.25
+      value: -1
       objectReference: {fileID: 0}
     - target: {fileID: 2150726326507425442, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: _rewardValues._goalSeen
@@ -254,7 +254,7 @@ PrefabInstance:
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_Model
       value: 
-      objectReference: {fileID: 5022602860645237092, guid: 8c0e564f4939372418ff28d0ac9170d3, type: 3}
+      objectReference: {fileID: 5022602860645237092, guid: ebd87e68c14098c469e78d7e26eaca45, type: 3}
     - target: {fileID: 6896056217525696654, guid: 4a4315295828f964b812abcc820f7250, type: 3}
       propertyPath: m_BrainParameters.VectorActionSize.Array.size
       value: 1
@@ -604,7 +604,7 @@ Camera:
   m_BackGroundColor: {r: 0.19215687, g: 0.3019608, b: 0.4745098, a: 0}
   m_projectionMatrixMode: 1
   m_GateFitMode: 2
-  m_FOVAxisMode: 0
+  m_FOVAxisMode: 1
   m_Iso: 200
   m_ShutterSpeed: 0.005
   m_Aperture: 16
@@ -624,7 +624,7 @@ Camera:
     height: 1
   near clip plane: 0.3
   far clip plane: 1000
-  field of view: 60
+  field of view: 46.826447
   orthographic: 0
   orthographic size: 5
   m_Depth: -1
