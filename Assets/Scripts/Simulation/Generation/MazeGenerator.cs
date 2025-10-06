@@ -31,6 +31,7 @@ namespace Simulation.Generation
 
         public IEnumerable<(Vector3, bool)> Generate()
         {
+            System.Random rd = new System.Random(42);
             cell[,] maze = GenerateMap(Vector2Int.zero);
             for (int x = 0; x < _size.x; x++)
             {
@@ -47,16 +48,15 @@ namespace Simulation.Generation
                                 (y == _size.y - 1 && i == 0))
                                 height = 1f;
                             else
-                                height = Random.value > .5f
+                                height = rd.Next(2) == 0
                                     ? 1f
                                     : .5f;
                         }
                         //If a wall should be up, it's either fully up or half up
                         else
-                            height = Random.value > .5f
+                            height = rd.Next(2) == 0
                                 ? 0f
                                 : .5f; //If a wall should be down, it's either fully down or half down
-
                         if (height >= .25f) //We only want at least half up walls to be concretely in
                             yield return (new Vector3(x + dirs[i].x / 2f, height, y + dirs[i].y / 2f), i % 2 == 0);
                     }
